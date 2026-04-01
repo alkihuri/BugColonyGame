@@ -25,13 +25,15 @@ namespace BugColony.Systems
         public void Update(float deltaTime)
         {
             var toCleanup = new List<BugBase>();
+            var keys = new List<BugBase>(_deadTimers.Keys);
 
-            foreach (var kvp in _deadTimers)
+            foreach (var key in keys)
             {
-                _deadTimers[kvp.Key] = kvp.Value + deltaTime;
-                if (_deadTimers[kvp.Key] >= _deadBugCleanupDelay)
+                float elapsed = _deadTimers[key] + deltaTime;
+                _deadTimers[key] = elapsed;
+                if (elapsed >= _deadBugCleanupDelay)
                 {
-                    toCleanup.Add(kvp.Key);
+                    toCleanup.Add(key);
                 }
             }
 
