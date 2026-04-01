@@ -42,14 +42,16 @@ namespace BugColony.Core
             builder.RegisterInstance(bugFactory);
 
             // Resource Factory
-            builder.Register<ResourceFactory>(Lifetime.Singleton)
+             builder.Register<ResourceFactory>(Lifetime.Singleton)
                 .WithParameter(resourcePool);
+             
 
             // Systems
             builder.Register<ColonyManager>(Lifetime.Singleton)
                 .WithParameter(bugFactory);
 
-            builder.Register<ResourceSpawner>(Lifetime.Singleton);
+             builder.Register<ResourceSpawner>(Lifetime.Singleton)
+               .WithParameter(bugFactory);
             builder.Register<MutationSystem>(Lifetime.Singleton);
             builder.Register<LifetimeSystem>(Lifetime.Singleton);
 

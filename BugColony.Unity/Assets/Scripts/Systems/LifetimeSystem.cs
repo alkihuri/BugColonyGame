@@ -10,8 +10,9 @@ namespace BugColony.Systems
         private readonly float _deadBugCleanupDelay;
         private readonly Dictionary<BugBase, float> _deadTimers = new();
 
-        public LifetimeSystem(ColonyManager colonyManager, float deadBugCleanupDelay = 5f)
+        public LifetimeSystem(ColonyManager colonyManager)
         {
+            float deadBugCleanupDelay = 5f;
             _colonyManager = colonyManager;
             _deadBugCleanupDelay = deadBugCleanupDelay;
             _colonyManager.OnBugDied += OnBugDied;

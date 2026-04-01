@@ -1,27 +1,23 @@
 using UnityEngine;
 using BugColony.Factory;
+using VContainer;
 
 namespace BugColony.Systems
 {
     public class ResourceSpawner
     {
         private readonly ResourceFactory _resourceFactory;
-        private readonly float _spawnInterval;
-        private readonly Vector3 _spawnAreaMin;
-        private readonly Vector3 _spawnAreaMax;
+        private readonly float _spawnInterval = 2f;
+        private readonly Vector3 _spawnAreaMin = new(-20f, 0f, -20f);
+        private readonly Vector3 _spawnAreaMax = new(20f, 0f, 20f);
         private float _timer;
 
-        public ResourceSpawner(
-            ResourceFactory resourceFactory,
-            float spawnInterval = 2f,
-            Vector3 spawnAreaMin = default,
-            Vector3 spawnAreaMax = default)
+        [Inject]
+        public ResourceSpawner(ResourceFactory resourceFactory)
         {
             _resourceFactory = resourceFactory;
-            _spawnInterval = spawnInterval;
-            _spawnAreaMin = spawnAreaMin == default ? new Vector3(-20f, 0f, -20f) : spawnAreaMin;
-            _spawnAreaMax = spawnAreaMax == default ? new Vector3(20f, 0f, 20f) : spawnAreaMax;
         }
+
 
         public void Update(float deltaTime)
         {
