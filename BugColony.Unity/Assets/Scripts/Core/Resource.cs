@@ -28,5 +28,10 @@ namespace BugColony
             IsConsumed = true;
             gameObject.SetActive(false);
         }
+        
+        public string GetResourceType()
+        {
+            return  gameObject.name;
+        }
     }
 }

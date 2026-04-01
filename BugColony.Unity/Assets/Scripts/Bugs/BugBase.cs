@@ -12,8 +12,8 @@ namespace BugColony.Bugs
         [SerializeField] private float speed = 3f;
         [SerializeField] private float energyDecayRate = 1f;
 
-        public float Health { get; protected set; }
-        public float Energy { get; protected set; }
+        [field:SerializeField]public float Health { get; protected set; }
+        [field:SerializeField]public float Energy { get; protected set; }
         public float Speed => speed;
         public bool IsAlive => Health > 0f;
 
@@ -31,6 +31,15 @@ namespace BugColony.Bugs
         protected virtual void Awake()
         {
             _stateMachine = new BugStateMachine();
+            // make sure colliders are set to trigger to avoid physics issues
+            var colliders = GetComponentsInChildren<Collider>();
+            foreach (var col in colliders)
+            {
+                if (!col.isTrigger)
+                {
+                    col.isTrigger = true;
+                }
+            }
         }
 
         protected virtual void Update()

@@ -9,7 +9,7 @@ namespace BugColony.Bugs.States
         private float _eatTimer;
         private readonly float _eatDuration;
 
-        public EatState(IResource resource, float eatDuration = 1.5f)
+        public EatState(IResource resource, float eatDuration = 0.5f)
         {
             _resource = resource;
             _eatDuration = eatDuration;
@@ -18,6 +18,7 @@ namespace BugColony.Bugs.States
         public override void Enter(IBug bug)
         {
             _eatTimer = 0f;
+            Debug.Log($"Eating {_resource} by {bug.GetType().Name}");
         }
 
         public override void Execute(IBug bug)

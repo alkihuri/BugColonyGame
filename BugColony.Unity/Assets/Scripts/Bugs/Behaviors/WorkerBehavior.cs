@@ -9,7 +9,7 @@ namespace BugColony.Bugs.Behaviors
         private readonly float _searchRadius;
         private readonly LayerMask _resourceLayer;
 
-        public WorkerBehavior(float searchRadius = 10f)
+        public WorkerBehavior(float searchRadius = 0.4f)
         {
             _searchRadius = searchRadius;
         }

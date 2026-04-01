@@ -5,5 +5,7 @@ namespace BugColony.Core
         float NutrientValue { get; }
         bool IsConsumed { get; }
         void Consume();
+        
+        string GetResourceType();
     }
 }
