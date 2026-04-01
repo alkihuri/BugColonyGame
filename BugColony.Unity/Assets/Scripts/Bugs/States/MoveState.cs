@@ -3,15 +3,22 @@ using BugColony.Core;
 
 namespace BugColony.Bugs.States
 {
+    /// <summary>
+    /// Random wandering state. The bug picks a random direction, rotates to face it,
+    /// and walks for _moveDuration seconds before returning to IdleState.
+    /// Rotating the bug is critical so that SphereCast forward in behaviors works correctly.
+    /// </summary>
     public class MoveState : BugStateBase
     {
         private Vector3 _targetDirection;
         private float _moveTimer;
         private readonly float _moveDuration;
+        private readonly float _rotationSpeed;
 
-        public MoveState(float moveDuration = 3f)
+        public MoveState(float moveDuration = 3f, float rotationSpeed = 8f)
         {
             _moveDuration = moveDuration;
+            _rotationSpeed = rotationSpeed;
         }
 
         public override void Enter(IBug bug)
@@ -26,7 +33,20 @@ namespace BugColony.Bugs.States
 
         public override void Execute(IBug bug)
         {
+            if (bug is not BugBase bugBase) return;
+
             _moveTimer += Time.deltaTime;
+
+            // Smoothly rotate toward movement direction so forward SphereCast works
+            if (_targetDirection != Vector3.zero)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(_targetDirection);
+                bugBase.transform.rotation = Quaternion.Slerp(
+                    bugBase.transform.rotation,
+                    targetRot,
+                    _rotationSpeed * Time.deltaTime);
+            }
+
             bug.Move(_targetDirection);
 
             if (_moveTimer >= _moveDuration)
