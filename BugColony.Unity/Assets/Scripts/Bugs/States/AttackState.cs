@@ -33,8 +33,15 @@ namespace BugColony.Bugs.States
             _attackCooldown += Time.deltaTime;
             if (_attackCooldown >= _attackInterval)
             {
+                bool wasAlive = _target.IsAlive;
                 _target.TakeDamage(_attackDamage);
                 _attackCooldown = 0f;
+
+                // If this attack killed the target, notify the attacker (predator kill counter)
+                if (wasAlive && !_target.IsAlive && bug is PredatorBug predator)
+                {
+                    predator.OnKill();
+                }
             }
         }
 

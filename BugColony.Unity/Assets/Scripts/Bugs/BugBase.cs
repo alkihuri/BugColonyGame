@@ -78,6 +78,8 @@ namespace BugColony.Bugs
 
         public void TakeDamage(float damage)
         {
+            // stop movement for 1 second when hit (could be used for hit reaction animation)   
+       
             if (!IsAlive) return;
             Health = Mathf.Max(Health - damage, 0f);
             if (Health <= 0f)

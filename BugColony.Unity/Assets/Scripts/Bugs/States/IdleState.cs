@@ -8,7 +8,7 @@ namespace BugColony.Bugs.States
         private float _idleTimer;
         private readonly float _idleDuration;
 
-        public IdleState(float idleDuration = 2f)
+        public IdleState(float idleDuration = 0f)
         {
             _idleDuration = idleDuration;
         }

@@ -21,7 +21,7 @@ namespace BugColony.Bugs.Behaviors
             float visionRange = 15f,
             float visionRadius = 2f,
             float attackRange = 1.2f,
-            float attackDamage = 10f)
+            float attackDamage = 100f)
         {
             _visionRange = visionRange;
             _visionRadius = visionRadius;
@@ -61,6 +61,7 @@ namespace BugColony.Bugs.Behaviors
         private static readonly RaycastHit[] VisionBuffer = new RaycastHit[32];
 
         // OverlapSphereNonAlloc tight radius — immediate melee check
+        // Predator attacks ANY live bug (workers AND other predators) and eats resources
         private bool TryFindPreyInMeleeRange(BugBase self, out GameObject target)
         {
             target = null;
@@ -70,9 +71,9 @@ namespace BugColony.Bugs.Behaviors
                 var col = MeleeBuffer[i];
                 if (col.gameObject == self.gameObject) continue;
 
-                // Prefer WorkerBug
-                var worker = col.GetComponent<WorkerBug>();
-                if (worker != null && worker.IsAlive)
+                // Any live bug is prey
+                var otherBug = col.GetComponent<BugBase>();
+                if (otherBug != null && otherBug.IsAlive)
                 {
                     target = col.gameObject;
                     return true;
@@ -89,7 +90,7 @@ namespace BugColony.Bugs.Behaviors
             return false;
         }
 
-        // SphereCastNonAlloc forward — vision cone detection for workers and resources
+        // SphereCastNonAlloc forward — vision cone: any live bug or resource
         private bool TryFindPreyAhead(BugBase self, out GameObject target)
         {
             target = null;
@@ -110,15 +111,12 @@ namespace BugColony.Bugs.Behaviors
                 var hit = VisionBuffer[i];
                 if (hit.collider.gameObject == self.gameObject) continue;
 
-                // Prioritize WorkerBug
-                var worker = hit.collider.GetComponent<WorkerBug>();
-                if (worker != null && worker.IsAlive)
+                // Any live bug is prey (workers and other predators)
+                var otherBug = hit.collider.GetComponent<BugBase>();
+                if (otherBug != null && otherBug.IsAlive && hit.distance < closestDist)
                 {
-                    if (hit.distance < closestDist)
-                    {
-                        closestDist = hit.distance;
-                        target = hit.collider.gameObject;
-                    }
+                    closestDist = hit.distance;
+                    target = hit.collider.gameObject;
                     continue;
                 }
 

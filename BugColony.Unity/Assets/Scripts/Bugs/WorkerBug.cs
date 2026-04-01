@@ -1,6 +1,7 @@
 using UnityEngine;
 using VContainer;
 using BugColony.Bugs.Behaviors;
+using BugColony.Core;
 using BugColony.Systems;
 
 namespace BugColony.Bugs
