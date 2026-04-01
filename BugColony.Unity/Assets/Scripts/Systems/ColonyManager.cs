@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BugColony.Bugs;
 using BugColony.Factory;
+using Random = UnityEngine.Random;
 
 namespace BugColony.Systems
 {
@@ -23,7 +24,7 @@ namespace BugColony.Systems
 
         public event Action<BugBase> OnBugSpawned;
         public event Action<BugBase> OnBugDied;
-        public event Action<BugBase, BugBase> OnBugSplit; // (parent, offspring)
+        public event Action<BugBase, BugBase> OnBugSplit;
 
         public ColonyManager(BugFactory bugFactory)
         {
@@ -39,10 +40,9 @@ namespace BugColony.Systems
         }
 
         /// <summary>
-        /// Called when a WorkerBug has eaten enough resources to split.
-        /// Spawns 2 offspring near the parent position.
-        /// If colony size > 10, each offspring has a 10% chance to mutate into a PredatorBug.
-        /// The parent is then despawned back into the pool.
+        /// Worker ate 2 resources → splits into 2 workers.
+        /// If colony > 10 bugs each offspring has 10% chance to mutate into a predator.
+        /// Parent is despawned.
         /// </summary>
         public void SplitWorker(WorkerBug parent)
         {
@@ -51,21 +51,15 @@ namespace BugColony.Systems
             Vector3 origin = parent.transform.position;
             bool colonyLarge = TotalAlive > MutationColonyThreshold;
 
-            Debug.Log($"[ColonyManager] Worker {parent.name} splits! Colony size: {TotalAlive}, mutation eligible: {colonyLarge}");
+            Debug.Log($"[ColonyManager] Worker {parent.name} splits! Colony: {TotalAlive}, mutation eligible: {colonyLarge}");
 
             for (int i = 0; i < 2; i++)
             {
-                // Scatter offspring in a small radius around the parent
-                Vector3 offset = new Vector3(
-                    UnityEngine.Random.Range(-SplitSpawnRadius, SplitSpawnRadius),
-                    0f,
-                    UnityEngine.Random.Range(-SplitSpawnRadius, SplitSpawnRadius));
-
+                Vector3 offset = RandomOffset(SplitSpawnRadius);
                 BugBase offspring;
 
-                if (colonyLarge && UnityEngine.Random.value < MutationChance)
+                if (colonyLarge && Random.value < MutationChance)
                 {
-                    // Mutate into a predator
                     offspring = SpawnBug(BugType.Predator, origin + offset);
                     Debug.Log($"[ColonyManager] Offspring {offspring.name} MUTATED into a Predator!");
                 }
@@ -77,8 +71,29 @@ namespace BugColony.Systems
                 OnBugSplit?.Invoke(parent, offspring);
             }
 
-            // Despawn the parent back into the pool
             DespawnBug(BugType.Worker, parent);
+        }
+
+        /// <summary>
+        /// Predator ate/killed 3 targets → splits into 2 predators with fresh timers.
+        /// Parent is despawned.
+        /// </summary>
+        public void SplitPredator(PredatorBug parent)
+        {
+            if (parent == null || !parent.IsAlive) return;
+
+            Vector3 origin = parent.transform.position;
+
+            Debug.Log($"[ColonyManager] Predator {parent.name} splits!");
+
+            for (int i = 0; i < 2; i++)
+            {
+                Vector3 offset = RandomOffset(SplitSpawnRadius);
+                BugBase offspring = SpawnBug(BugType.Predator, origin + offset);
+                OnBugSplit?.Invoke(parent, offspring);
+            }
+
+            DespawnBug(BugType.Predator, parent);
         }
 
         public void DespawnBug(BugType type, BugBase bug)
@@ -89,7 +104,7 @@ namespace BugColony.Systems
             _bugFactory.Recycle(type, bug);
         }
 
-        // Keep old name for backward compatibility
+        // Backward-compatible alias
         public void RecycleBug(BugType type, BugBase bug) => DespawnBug(type, bug);
 
         private void RegisterBug(BugBase bug)
@@ -103,6 +118,16 @@ namespace BugColony.Systems
             _aliveBugs.Remove(bug);
             _deadBugs.Add(bug);
             OnBugDied?.Invoke(bug);
+
+            // Colony rule: if no bugs remain, spawn a rescue worker
+            if (_aliveBugs.Count == 0)
+            {
+                Debug.Log("[ColonyManager] Colony wiped out — spawning rescue worker.");
+                SpawnBug(BugType.Worker, Vector3.zero);
+            }
         }
+
+        private static Vector3 RandomOffset(float radius) =>
+            new(Random.Range(-radius, radius), 0f, Random.Range(-radius, radius));
     }
 }

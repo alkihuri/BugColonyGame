@@ -11,16 +11,21 @@ namespace BugColony.Core
 {
     public class GameLifetimeScope : LifetimeScope
     {
-        [Header("Bug Prefabs")]
-        [SerializeField] private WorkerBug workerBugPrefab;
+        [Header("Bug Prefabs")] [SerializeField]
+        private WorkerBug workerBugPrefab;
+
         [SerializeField] private PredatorBug predatorBugPrefab;
 
-        [Header("Resource Prefabs")]
-        [SerializeField] private Resource resourcePrefab;
+        [Header("Resource Prefabs")] [SerializeField]
+        private Resource resourcePrefab;
 
-        [Header("Pool Settings")]
-        [SerializeField] private int initialBugPoolSize = 20;
+        [Header("Pool Settings")] [SerializeField]
+        private int initialBugPoolSize = 20;
+
         [SerializeField] private int initialResourcePoolSize = 30;
+
+        [Header("UI")] [SerializeField] private UiController uiPrefab;
+
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -65,8 +70,10 @@ namespace BugColony.Core
             builder.Register<MutationSystem>(Lifetime.Singleton);
             builder.Register<LifetimeSystem>(Lifetime.Singleton);
 
-            // UI
+            // UI 
+            builder.RegisterInstance<UiController>(uiPrefab);
             builder.Register<UIManager>(Lifetime.Singleton);
+
 
             // Entry Point
             builder.RegisterEntryPoint<GameBootstrap>();

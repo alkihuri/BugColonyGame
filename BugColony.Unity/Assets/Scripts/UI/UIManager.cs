@@ -1,5 +1,3 @@
-using UnityEngine;
-using UnityEngine.UI;
 using BugColony.Systems;
 
 namespace BugColony.UI
@@ -7,27 +5,35 @@ namespace BugColony.UI
     public class UIManager
     {
         private readonly ColonyManager _colonyManager;
-        private Text _aliveCountText;
-        private Text _deadCountText;
+        private readonly UiController _ui;
 
-        public UIManager(ColonyManager colonyManager)
+        public UIManager(ColonyManager colonyManager, UiController ui)
         {
             _colonyManager = colonyManager;
-        }
-
-        public void BindUI(Text aliveCountText, Text deadCountText)
-        {
-            _aliveCountText = aliveCountText;
-            _deadCountText = deadCountText;
+            _ui = ui;
         }
 
         public void Update()
         {
-            if (_aliveCountText != null)
-                _aliveCountText.text = $"Alive: {_colonyManager.TotalAlive}";
+            if (_ui == null) return;
 
-            if (_deadCountText != null)
-                _deadCountText.text = $"Dead: {_colonyManager.TotalDead}";
+            if (_ui.aliveCountText != null)
+                _ui.aliveCountText.text = $"Alive Bugs: {_colonyManager.TotalAlive}";
+
+            int deadWorkers = 0;
+            int deadPredators = 0;
+
+            foreach (var dead in _colonyManager.DeadBugs)
+            {
+                if (dead is BugColony.Bugs.PredatorBug) deadPredators++;
+                else deadWorkers++;
+            }
+
+            if (_ui.deadWorkerCountText != null)
+                _ui.deadWorkerCountText.text = $"Dead Workers: {deadWorkers}";
+
+            if (_ui.deadPredatorCountText != null)
+                _ui.deadPredatorCountText.text = $"Dead Predators: {deadPredators}";
         }
     }
 }
