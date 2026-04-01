@@ -20,20 +20,13 @@ namespace BugColony.UI
             if (_ui.aliveCountText != null)
                 _ui.aliveCountText.text = $"Alive Bugs: {_colonyManager.TotalAlive}";
 
-            int deadWorkers = 0;
-            int deadPredators = 0;
-
-            foreach (var dead in _colonyManager.DeadBugs)
-            {
-                if (dead is BugColony.Bugs.PredatorBug) deadPredators++;
-                else deadWorkers++;
-            }
+            
 
             if (_ui.deadWorkerCountText != null)
-                _ui.deadWorkerCountText.text = $"Dead Workers: {deadWorkers}";
+                _ui.deadWorkerCountText.text = $"Dead Workers: {_colonyManager.DeadWorkers}";
 
             if (_ui.deadPredatorCountText != null)
-                _ui.deadPredatorCountText.text = $"Dead Predators: {deadPredators}";
+                _ui.deadPredatorCountText.text = $"Dead Predators: {_colonyManager.DeadPredators}";
         }
     }
 }

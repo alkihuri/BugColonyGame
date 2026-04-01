@@ -14,13 +14,16 @@ namespace BugColony.Systems
         private const float SplitSpawnRadius = 1.5f;
 
         private readonly List<BugBase> _aliveBugs = new();
-        private readonly List<BugBase> _deadBugs = new();
+        private readonly List<BugBase> _deadBugs = new(); 
         private readonly BugFactory _bugFactory;
 
         public IReadOnlyList<BugBase> AliveBugs => _aliveBugs;
         public IReadOnlyList<BugBase> DeadBugs => _deadBugs;
         public int TotalAlive => _aliveBugs.Count;
         public int TotalDead => _deadBugs.Count;
+
+        public int DeadWorkers = 0;
+        public int DeadPredators = 0;
 
         public event Action<BugBase> OnBugSpawned;
         public event Action<BugBase> OnBugDied;
@@ -99,7 +102,13 @@ namespace BugColony.Systems
         public void DespawnBug(BugType type, BugBase bug)
         {
             _aliveBugs.Remove(bug);
-            _deadBugs.Remove(bug);
+            _deadBugs.Remove(bug); 
+            
+            if(type == BugType.Predator)
+                DeadPredators++;
+            else if(type == BugType.Worker)
+                DeadWorkers++;
+            
             bug.OnDeath -= HandleBugDeath;
             _bugFactory.Recycle(type, bug);
         }
