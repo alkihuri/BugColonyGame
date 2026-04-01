@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.Bugs.PredatorBug
   maxHealth: 100
   maxEnergy: 100
-  speed: 3
+  speed: 4
   energyDecayRate: 1
   <Health>k__BackingField: 0
   <Energy>k__BackingField: 0

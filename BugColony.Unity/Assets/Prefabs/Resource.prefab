@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59c5bdf75e13490da10d2b05eaee529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BugColony.Resource
-  nutrientValue: 20
+  nutrientValue: 100
 --- !u!54 &844723809836507372
 Rigidbody:
   m_ObjectHideFlags: 0
