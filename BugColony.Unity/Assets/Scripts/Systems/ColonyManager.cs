@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BugColony.Bugs;
 using BugColony.Factory;
+using MonoContainer;
 using Random = UnityEngine.Random;
 
 namespace BugColony.Systems
@@ -14,16 +15,17 @@ namespace BugColony.Systems
         private const float SplitSpawnRadius = 1.5f;
 
         private readonly List<BugBase> _aliveBugs = new();
-        private readonly List<BugBase> _deadBugs = new(); 
+        private readonly List<BugBase> _deadBugs = new();
         private readonly BugFactory _bugFactory;
 
         public IReadOnlyList<BugBase> AliveBugs => _aliveBugs;
         public IReadOnlyList<BugBase> DeadBugs => _deadBugs;
-        public int TotalAlive => _aliveBugs.Count;
-        public int TotalDead => _deadBugs.Count;
 
-        public int DeadWorkers = 0;
-        public int DeadPredators = 0;
+        public IntContainer TotalAlive = new IntContainer();
+        public IntContainer TotalDead = new IntContainer();
+
+        public IntContainer DeadWorkers = new IntContainer();
+        public IntContainer DeadPredators = new IntContainer();
 
         public event Action<BugBase> OnBugSpawned;
         public event Action<BugBase> OnBugDied;
@@ -32,10 +34,16 @@ namespace BugColony.Systems
         public ColonyManager(BugFactory bugFactory)
         {
             _bugFactory = bugFactory;
+
+            TotalAlive.Value = _aliveBugs.Count;
+            TotalDead.Value = _deadBugs.Count;
+            DeadWorkers.Value = 0;
+            DeadPredators.Value = 0;
         }
 
         public BugBase SpawnBug(BugType type, Vector3 position)
         {
+            TotalAlive.Value++;
             BugBase bug = _bugFactory.Create(type, position);
             RegisterBug(bug);
             OnBugSpawned?.Invoke(bug);
@@ -52,9 +60,10 @@ namespace BugColony.Systems
             if (parent == null || !parent.IsAlive) return;
 
             Vector3 origin = parent.transform.position;
-            bool colonyLarge = TotalAlive > MutationColonyThreshold;
+            bool colonyLarge = TotalAlive.Value > MutationColonyThreshold;
 
-            Debug.Log($"[ColonyManager] Worker {parent.name} splits! Colony: {TotalAlive}, mutation eligible: {colonyLarge}");
+            Debug.Log(
+                $"[ColonyManager] Worker {parent.name} splits! Colony: {TotalAlive}, mutation eligible: {colonyLarge}");
 
             for (int i = 0; i < 2; i++)
             {
@@ -102,13 +111,15 @@ namespace BugColony.Systems
         public void DespawnBug(BugType type, BugBase bug)
         {
             _aliveBugs.Remove(bug);
-            _deadBugs.Remove(bug); 
-            
-            if(type == BugType.Predator)
-                DeadPredators++;
-            else if(type == BugType.Worker)
-                DeadWorkers++;
-            
+            _deadBugs.Remove(bug);
+
+            TotalDead.Value--;
+
+            if (type == BugType.Predator)
+                DeadPredators.Value++;
+            else if (type == BugType.Worker)
+                DeadWorkers.Value++;
+
             bug.OnDeath -= HandleBugDeath;
             _bugFactory.Recycle(type, bug);
         }
