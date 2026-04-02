@@ -26,8 +26,7 @@ namespace BugColony.Core
 
         [Header("UI")] [SerializeField] private UiController uiPrefab;
 
-        [Header("Configs")]
-        [SerializeField] private BugsConfig bugsConfig;
+        [Header("Configs")] [SerializeField] private BugsConfig bugsConfig;
         [SerializeField] private ColonyConfig colonyConfig;
         [SerializeField] private ResourceSpawnerConfig resourceSpawnerConfig;
         [SerializeField] private GameBootstrapConfig gameBootstrapConfig;
@@ -68,10 +67,10 @@ namespace BugColony.Core
                 .WithParameter(resourcePool);
 
             // Configs
-            builder.RegisterInstance(bugsConfig);
-            builder.RegisterInstance(colonyConfig);
-            builder.RegisterInstance(resourceSpawnerConfig);
-            builder.RegisterInstance(gameBootstrapConfig);
+            builder.RegisterInstance<BugsConfig>(bugsConfig);
+            builder.RegisterInstance<ColonyConfig>(colonyConfig);
+            builder.RegisterInstance<ResourceSpawnerConfig>(resourceSpawnerConfig);
+            builder.RegisterInstance<GameBootstrapConfig>(gameBootstrapConfig);
 
             // Systems
             builder.Register<ColonyManager>(Lifetime.Singleton)
