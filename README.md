@@ -230,7 +230,7 @@ All tunable game parameters live in **ScriptableObject** assets. This allows des
 | Config Class | Key Fields | Consumed By |
 |---|---|---|
 | **`GameBootstrapConfig`** | `InitialWorkerCount` (5), `InitialPredatorCount` (2), `InitialSpawnRangeMin/Max` (−10…10) | `GameBootstrap` |
-| **`BugsConfig`** | `WorkerLifetime` (30 s), `PredatorLifetime` (20 s), `DeadBugCleanupDelay` (5 s), `MutationChance` (10 %) | `LifetimeSystem` |
+| **`BugsConfig`** | `WorkerLifetime` (30 s), `PredatorLifetime` (20 s — note: `PredatorBug` currently uses a hardcoded 10 s constant), `DeadBugCleanupDelay` (5 s), `MutationChance` (10 %) | `LifetimeSystem` |
 | **`ColonyConfig`** | `MutationColonyThreshold` (10), `MutationChance` (10 %), `SplitSpawnRadius` (1.5 u) | `ColonyManager` |
 | **`ResourceSpawnerConfig`** | `SpawnInterval` (2 s), `SpawnAreaMin/Max` (−20…20) | `ResourceSpawner` |
 
@@ -350,7 +350,7 @@ The game creates **emergent difficulty** through the interaction of population d
 
 ### Emergent Dynamics
 
-- **Early game (< 10 bugs):** Only workers exist. Colony grows by gathering resources and splitting. No predator mutations yet.
+- **Early game (< 10 bugs):** The initial colony contains both workers and a small number of predators. Workers gather resources and split; mutation-based predator spawning is disabled until the colony exceeds 10 bugs.
 - **Mid game (> 10 bugs):** Mutations kick in. Worker splits occasionally produce predators, introducing natural population control.
 - **Predator cascade:** If predators hunt successfully, they split and create more predators — leading to explosive but short-lived predator booms (10 s lifespan acts as a natural limiter).
 - **Colony wipeout safety net:** If all bugs die, a single **rescue worker** spawns at the origin to restart the cycle.
