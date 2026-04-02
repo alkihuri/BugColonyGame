@@ -607,6 +607,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7173128099172095550, guid: ea3f9ebadce47446ca64e7a7d356aec6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7173128099172095550, guid: ea3f9ebadce47446ca64e7a7d356aec6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7173128099172095550, guid: ea3f9ebadce47446ca64e7a7d356aec6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7173128099172095550, guid: ea3f9ebadce47446ca64e7a7d356aec6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7302633139626951135, guid: ea3f9ebadce47446ca64e7a7d356aec6, type: 3}
       propertyPath: m_Name
       value: App

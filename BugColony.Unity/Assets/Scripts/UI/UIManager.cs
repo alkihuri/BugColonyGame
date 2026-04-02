@@ -11,22 +11,42 @@ namespace BugColony.UI
         {
             _colonyManager = colonyManager;
             _ui = ui;
+            
+            
+            _colonyManager.DeadWorkers.OnValueChanged += UpdateDeadWorkersUi;
+            _colonyManager.DeadPredators.OnValueChanged += UpdateDeadPredatorsUi;
+            _colonyManager.TotalDead.OnValueChanged += UpdateTotalDeadUi;
+            _colonyManager.TotalAlive.OnValueChanged += UpdateTotalAliveUi;
         }
 
-        public void Update()
+        private void UpdateTotalAliveUi(int obj)
         {
-            if (_ui == null) return;
+            _ui.GetFreeOrNewField("TotalAliveText").text = $"Total Alive: {obj}";
+        }
 
-            if (_ui.aliveCountText != null)
-                _ui.aliveCountText.text = $"Alive Bugs: {_colonyManager.TotalAlive}";
+        private void UpdateTotalDeadUi(int obj)
+        {
+            _ui.GetFreeOrNewField("TotalDeadText").text = $"Total Dead: {obj}";
+        }
 
+        private void UpdateDeadWorkersUi(int obj)
+        {
+            _ui.GetFreeOrNewField("DeadWorkersText").text = $"Dead Workers: {obj}";
+        }
+
+        private void UpdateDeadPredatorsUi(int obj)
+        { 
+            _ui.GetFreeOrNewField("DeadPredators").text = $"Dead Predators: {obj}";
+        }
+        
+        
+
+        
+        
+        
+        public void Update()
+        { 
             
-
-            if (_ui.deadWorkerCountText != null)
-                _ui.deadWorkerCountText.text = $"Dead Workers: {_colonyManager.DeadWorkers}";
-
-            if (_ui.deadPredatorCountText != null)
-                _ui.deadPredatorCountText.text = $"Dead Predators: {_colonyManager.DeadPredators}";
         }
     }
 }
