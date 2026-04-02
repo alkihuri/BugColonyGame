@@ -29,6 +29,7 @@ namespace BugColony.Bugs.States
                 0f,
                 Random.Range(-1f, 1f)
             ).normalized;
+            
         }
 
         public override void Execute(IBug bug)
@@ -52,6 +53,8 @@ namespace BugColony.Bugs.States
             if (_moveTimer >= _moveDuration)
             {
                 bug.SetState(new IdleState());
+
+                Tools.FieldMeasurer.AddPoint(bugBase.transform.position);
             }
         }
 
