@@ -133,6 +133,10 @@ MonoBehaviour:
   initialBugPoolSize: 20
   initialResourcePoolSize: 30
   uiPrefab: {fileID: 7184199819802244783}
+  bugsConfig: {fileID: 11400000, guid: 8c511f500602b4bf0a599cb5c583ae81, type: 2}
+  colonyConfig: {fileID: 11400000, guid: 2db34ffa04fd54577b17a602576d9fb3, type: 2}
+  resourceSpawnerConfig: {fileID: 11400000, guid: a82fafca5af7f4396ad0123e527bef41, type: 2}
+  gameBootstrapConfig: {fileID: 11400000, guid: f586913624c1746cd93b7a40df946810, type: 2}
 --- !u!1001 &1303569420076049020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -236,47 +240,25 @@ PrefabInstance:
     - target: {fileID: 8188761106660791507, guid: a57d555698a07441dbd82af9d504960a, type: 3}
       propertyPath: aliveCountText
       value: 
-      objectReference: {fileID: 7575000764664209194}
+      objectReference: {fileID: 0}
     - target: {fileID: 8188761106660791507, guid: a57d555698a07441dbd82af9d504960a, type: 3}
       propertyPath: deadWorkerCountText
       value: 
-      objectReference: {fileID: 886444059848404924}
+      objectReference: {fileID: 0}
     - target: {fileID: 8188761106660791507, guid: a57d555698a07441dbd82af9d504960a, type: 3}
       propertyPath: deadPredatorCountText
       value: 
-      objectReference: {fileID: 5440212306678029794}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a57d555698a07441dbd82af9d504960a, type: 3}
---- !u!114 &886444059848404924 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2187198377818918336, guid: a57d555698a07441dbd82af9d504960a, type: 3}
-  m_PrefabInstance: {fileID: 1303569420076049020}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!4 &4706121066185564619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6005749492329530295, guid: a57d555698a07441dbd82af9d504960a, type: 3}
   m_PrefabInstance: {fileID: 1303569420076049020}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5440212306678029794 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6442594154952359838, guid: a57d555698a07441dbd82af9d504960a, type: 3}
-  m_PrefabInstance: {fileID: 1303569420076049020}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &7184199819802244783 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8188761106660791507, guid: a57d555698a07441dbd82af9d504960a, type: 3}
@@ -288,14 +270,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1324309c9917a4100aed2cd2341cdb9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UiController
---- !u!114 &7575000764664209194 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8865611245431995734, guid: a57d555698a07441dbd82af9d504960a, type: 3}
-  m_PrefabInstance: {fileID: 1303569420076049020}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cac255e39e95f46d8b4799413f86c3e1, type: 3}
+  m_Name: Bugs Config
+  m_EditorClassIdentifier: Assembly-CSharp::BugsConfig
+  WorkerLifetime: 30
+  PredatorLifetime: 120
+  DeadBugCleanupDelay: 5
+  MutationChance: 0.1
