@@ -10,13 +10,10 @@ namespace BugColony.Systems
 {
     public class ColonyManager
     {
-        private const int MutationColonyThreshold = 10;
-        private const float MutationChance = 0.1f;
-        private const float SplitSpawnRadius = 1.5f;
-
         private readonly List<BugBase> _aliveBugs = new();
         private readonly List<BugBase> _deadBugs = new();
         private readonly BugFactory _bugFactory;
+        private readonly ColonyConfig _colonyConfig;
 
         public IReadOnlyList<BugBase> AliveBugs => _aliveBugs;
         public IReadOnlyList<BugBase> DeadBugs => _deadBugs;
@@ -31,9 +28,10 @@ namespace BugColony.Systems
         public event Action<BugBase> OnBugDied;
         public event Action<BugBase, BugBase> OnBugSplit;
 
-        public ColonyManager(BugFactory bugFactory)
+        public ColonyManager(BugFactory bugFactory, ColonyConfig colonyConfig)
         {
             _bugFactory = bugFactory;
+            _colonyConfig = colonyConfig;
 
             TotalAlive.Value = _aliveBugs.Count;
             TotalDead.Value = _deadBugs.Count;
@@ -60,17 +58,17 @@ namespace BugColony.Systems
             if (parent == null || !parent.IsAlive) return;
 
             Vector3 origin = parent.transform.position;
-            bool colonyLarge = TotalAlive.Value > MutationColonyThreshold;
+            bool colonyLarge = TotalAlive.Value > _colonyConfig.MutationColonyThreshold;
 
             Debug.Log(
                 $"[ColonyManager] Worker {parent.name} splits! Colony: {TotalAlive}, mutation eligible: {colonyLarge}");
 
             for (int i = 0; i < 2; i++)
             {
-                Vector3 offset = RandomOffset(SplitSpawnRadius);
+                Vector3 offset = RandomOffset(_colonyConfig.SplitSpawnRadius);
                 BugBase offspring;
 
-                if (colonyLarge && Random.value < MutationChance)
+                if (colonyLarge && Random.value < _colonyConfig.MutationChance)
                 {
                     offspring = SpawnBug(BugType.Predator, origin + offset);
                     Debug.Log($"[ColonyManager] Offspring {offspring.name} MUTATED into a Predator!");
@@ -100,7 +98,7 @@ namespace BugColony.Systems
 
             for (int i = 0; i < 2; i++)
             {
-                Vector3 offset = RandomOffset(SplitSpawnRadius);
+                Vector3 offset = RandomOffset(_colonyConfig.SplitSpawnRadius);
                 BugBase offspring = SpawnBug(BugType.Predator, origin + offset);
                 OnBugSplit?.Invoke(parent, offspring);
             }
