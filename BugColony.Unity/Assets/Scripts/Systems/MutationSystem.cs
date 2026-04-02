@@ -7,9 +7,9 @@ namespace BugColony.Systems
     {
         private readonly float _mutationChance;
 
-        public MutationSystem(float mutationChance = 0.1f)
+        public MutationSystem(BugsConfig bugsConfig)
         {
-            _mutationChance = mutationChance;
+            _mutationChance = bugsConfig.MutationChance;
         }
 
         public void TryMutate(BugBase bug)

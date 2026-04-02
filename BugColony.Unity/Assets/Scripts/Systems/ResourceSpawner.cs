@@ -7,15 +7,18 @@ namespace BugColony.Systems
     public class ResourceSpawner
     {
         private readonly ResourceFactory _resourceFactory;
-        private readonly float _spawnInterval = 2f;
-        private readonly Vector3 _spawnAreaMin = new(-20f, 0f, -20f);
-        private readonly Vector3 _spawnAreaMax = new(20f, 0f, 20f);
+        private readonly float _spawnInterval;
+        private readonly Vector3 _spawnAreaMin;
+        private readonly Vector3 _spawnAreaMax;
         private float _timer;
 
         [Inject]
-        public ResourceSpawner(ResourceFactory resourceFactory)
+        public ResourceSpawner(ResourceFactory resourceFactory, ResourceSpawnerConfig config)
         {
             _resourceFactory = resourceFactory;
+            _spawnInterval = config.SpawnInterval;
+            _spawnAreaMin = config.SpawnAreaMin;
+            _spawnAreaMax = config.SpawnAreaMax;
         }
 
 
